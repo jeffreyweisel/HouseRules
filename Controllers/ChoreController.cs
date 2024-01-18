@@ -139,8 +139,6 @@ public IActionResult UnassignChore(int id, [FromQuery] int userId)
         _dbContext.SaveChanges();
         return NoContent();
     }
-
-    // If the ChoreAssignment record was not found, return a response indicating it wasn't assigned
     return NoContent();
 }
 
