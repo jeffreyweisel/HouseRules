@@ -2,7 +2,12 @@ import { Route, Routes } from "react-router-dom";
 import { AuthorizedRoute } from "./auth/AuthorizedRoute";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
-
+import Home from "./Home";
+import UserProfileList from "./UserProfileList";
+import UserProfileDetails from "./UserProfileDetails";
+import ChoreList from "./ChoreList";
+import CreateChore from "./CreateChore";
+import ChoreDetails from "./ChoreDetails";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
   return (
@@ -12,27 +17,53 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
           index
           element={
             <AuthorizedRoute loggedInUser={loggedInUser}>
-              <>Thing 1</>
+              <Home />
+            </AuthorizedRoute>
+          }
+        />
+
+        <Route
+          path="userprofiles"
+          element={
+            <AuthorizedRoute loggedInUser={loggedInUser}>
+              <UserProfileList />
             </AuthorizedRoute>
           }
         />
         <Route
-          path="bikes"
+          path="userprofiles/:id"
           element={
             <AuthorizedRoute loggedInUser={loggedInUser}>
-              <>Thing 2</>
+              <UserProfileDetails />
             </AuthorizedRoute>
           }
         />
-        <Route path="workorders">
+
+        <Route path="chores">
           <Route
             index
             element={
               <AuthorizedRoute loggedInUser={loggedInUser}>
-                <>Thing 3</>
+                <ChoreList />
               </AuthorizedRoute>
             }
           />
+          <Route
+            path="create"
+            element={
+              <AuthorizedRoute loggedInUser={loggedInUser}>
+                <CreateChore />
+              </AuthorizedRoute>
+            }
+          />
+          <Route
+          path=":id"
+          element={
+            <AuthorizedRoute loggedInUser={loggedInUser}>
+              <ChoreDetails />
+            </AuthorizedRoute>
+          }
+        />
         </Route>
         <Route
           path="login"

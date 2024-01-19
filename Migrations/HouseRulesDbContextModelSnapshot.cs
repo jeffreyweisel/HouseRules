@@ -237,7 +237,7 @@ namespace HouseRules.Migrations
                         new
                         {
                             Id = "c3aaeb97-d2ba-4a53-a521-4eea61e59b35",
-                            ConcurrencyStamp = "03464ec5-1a32-41a9-8d8a-98476bdd0d61",
+                            ConcurrencyStamp = "0fb5e6e4-108f-426b-aeab-507cf839672e",
                             Name = "Admin",
                             NormalizedName = "admin"
                         });
@@ -336,13 +336,13 @@ namespace HouseRules.Migrations
                         {
                             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d97df7b7-b555-44e7-bd38-d754413db188",
+                            ConcurrencyStamp = "ebb2dc73-0039-4df4-9b62-cc2b84b4c11f",
                             Email = "admina@strator.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAECiAOIcOMo+TplznHljm2U4+dJbK5I4sgAa2j5dYyA9BzFHWZz9kC8glWjMOEPtQRg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEK0BKVs6Mjya8ybxFQpx71e5uJbCA6CJCj5TVGBJImE1QdpqcmA+kGM02I1hGxuFxA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a403de5c-b6c9-40ee-9076-bf48a6d1ec50",
+                            SecurityStamp = "b7cb292a-570e-4431-8a10-012316efe492",
                             TwoFactorEnabled = false,
                             UserName = "Administrator"
                         });
@@ -445,7 +445,7 @@ namespace HouseRules.Migrations
                         .IsRequired();
 
                     b.HasOne("HouseRules.Models.UserProfile", "UserProfile")
-                        .WithMany()
+                        .WithMany("ChoreAssignments")
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -464,7 +464,7 @@ namespace HouseRules.Migrations
                         .IsRequired();
 
                     b.HasOne("HouseRules.Models.UserProfile", "UserProfile")
-                        .WithMany()
+                        .WithMany("ChoreCompletions")
                         .HasForeignKey("UserProfileId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -541,6 +541,13 @@ namespace HouseRules.Migrations
                     b.Navigation("ChoreAssignments");
 
                     b.Navigation("ChoreCompletion");
+                });
+
+            modelBuilder.Entity("HouseRules.Models.UserProfile", b =>
+                {
+                    b.Navigation("ChoreAssignments");
+
+                    b.Navigation("ChoreCompletions");
                 });
 #pragma warning restore 612, 618
         }

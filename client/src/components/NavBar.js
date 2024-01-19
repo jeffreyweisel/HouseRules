@@ -23,11 +23,26 @@ return (
         <NavbarBrand className="mr-auto" tag={RRNavLink} to="/">
         🧹🧼House Rules
         </NavbarBrand>
+        
         {loggedInUser ? (
         <>
             <NavbarToggler onClick={toggleNavbar} />
             <Collapse isOpen={open} navbar>
-            <Nav navbar></Nav>
+            <Nav navbar>
+            {loggedInUser.roles.includes("Admin") && (
+                  <NavItem onClick={() => setOpen(false)}>
+                    <NavLink tag={RRNavLink} to="/userprofiles">
+                      Employees
+                    </NavLink>
+                  </NavItem>
+                  
+                )}
+                <NavItem onClick={() => setOpen(false)}>
+                    <NavLink tag={RRNavLink} to="/chores">
+                      Chores
+                    </NavLink>
+                  </NavItem>
+            </Nav>
             </Collapse>
             <Button
             color="primary"
