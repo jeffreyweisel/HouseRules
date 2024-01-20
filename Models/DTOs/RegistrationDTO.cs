@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace HouseRules.Models.DTOs;
 
 public class RegistrationDTO

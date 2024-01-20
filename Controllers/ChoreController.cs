@@ -24,14 +24,34 @@ public class ChoreController : ControllerBase
     {
         return Ok(_dbContext
             .Chores
-            .Include(c => c.ChoreAssignments)
-            .Include(c => c.ChoreCompletion)
+            .Include(b => b.ChoreAssignments)
+            .ThenInclude(b => b.UserProfile)
+            .Include(b => b.ChoreCompletion)
+            .ThenInclude(cc => cc.UserProfile)
             .Select(c => new ChoreDTO
             {
                 Id = c.Id,
                 Name = c.Name,
                 Difficulty = c.Difficulty,
                 ChoreFrequencyDays = c.ChoreFrequencyDays,
+                ChoreAssignments = c.ChoreAssignments
+                .Select(ca => new ChoreAssignmentDTO
+                {
+                    Id = ca.Id,
+                    UserProfileId = ca.UserProfileId,
+                    ChoreId = ca.ChoreId
+                })
+                .ToList(),
+                ChoreCompletion = c.ChoreCompletion
+                .Select(ca => new ChoreCompletionDTO
+                {
+                    Id = ca.Id,
+                    UserProfileId = ca.UserProfileId,
+                    ChoreId = ca.ChoreId,
+                    CompletedOn = ca.CompletedOn
+                })
+                .ToList()
+               
             })
             .ToList());
     }
@@ -145,20 +165,38 @@ public IActionResult UnassignChore(int id, [FromQuery] int userId)
 
 // Complete a chore
 [HttpPost("{id}/complete")]
-// [Authorize]
 public IActionResult Complete(int id, [FromQuery] int userId)
 {
-    _dbContext.ChoreCompletions.Add(new ChoreCompletion
+    // Retrieve the UserProfile and Chore entities based on their IDs
+    var userProfile = _dbContext.UserProfiles.Find(userId);
+    var chore = _dbContext.Chores.Find(id);
+
+    // Check if both UserProfile and Chore entities exist
+    if (userProfile == null || chore == null)
+    {
+        // Handle the case where either UserProfile or Chore does not exist
+        return NotFound("UserProfile or Chore not found");
+    }
+
+    // Create a new ChoreCompletion entity and set properties
+    var choreCompletion = new ChoreCompletion
     {
         UserProfileId = userId,
+        UserProfile = userProfile,
         ChoreId = id,
-        CompletedOn = DateTime.Now 
-    });
+        Chore = chore,
+        CompletedOn = DateTime.Now
+    };
 
+    // Add the new ChoreCompletion entity to the context
+    _dbContext.ChoreCompletions.Add(choreCompletion);
+
+    // Save changes to the database
     _dbContext.SaveChanges();
 
     return NoContent();
 }
+
 
 
 }

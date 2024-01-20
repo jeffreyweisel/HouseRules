@@ -8,8 +8,12 @@ import UserProfileDetails from "./UserProfileDetails";
 import ChoreList from "./ChoreList";
 import CreateChore from "./CreateChore";
 import ChoreDetails from "./ChoreDetails";
+import UserChoreList from "./UserChores";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
+
+  console.log("loggedInUser in ApplicationViews:", loggedInUser);
+
   return (
     <Routes>
       <Route path="/">
@@ -44,7 +48,7 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
             index
             element={
               <AuthorizedRoute loggedInUser={loggedInUser}>
-                <ChoreList />
+                <ChoreList loggedInUser={loggedInUser} />
               </AuthorizedRoute>
             }
           />
@@ -60,11 +64,19 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
           path=":id"
           element={
             <AuthorizedRoute loggedInUser={loggedInUser}>
-              <ChoreDetails />
+              <ChoreDetails loggedInUser={loggedInUser}/>
             </AuthorizedRoute>
           }
         />
         </Route>
+        <Route
+          path="mychores"
+          element={
+            <AuthorizedRoute loggedInUser={loggedInUser}>
+              <UserChoreList loggedInUser={loggedInUser}/>
+            </AuthorizedRoute>
+          }
+        />
         <Route
           path="login"
           element={<Login setLoggedInUser={setLoggedInUser} />}

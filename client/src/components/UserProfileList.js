@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Table } from "reactstrap";
+import { Table } from "reactstrap";
 import { getUserProfilesWithRoles } from "../managers/userProfileManager";
 import { Link } from "react-router-dom";
 

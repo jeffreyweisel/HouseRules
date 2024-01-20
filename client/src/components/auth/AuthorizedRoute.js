@@ -4,6 +4,7 @@ import { Navigate } from "react-router-dom";
 // or navigates to the login. If roles are provided, the route will require
 // all of the roles when all is true, or any of the roles when all is false
 export const AuthorizedRoute = ({ children, loggedInUser, roles, all }) => {
+  console.log("AuthorizedRoute - loggedInUser:", loggedInUser);
   let authed = false;
   if (loggedInUser) {
     if (roles && roles.length) {

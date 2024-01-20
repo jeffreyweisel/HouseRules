@@ -10,11 +10,12 @@ export default function App() {
   const [loggedInUser, setLoggedInUser] = useState();
 
   useEffect(() => {
-    // user will be null if not authenticated
     tryGetLoggedInUser().then((user) => {
+      console.log("Fetched user:", user);
       setLoggedInUser(user);
     });
   }, []);
+  
 
   // wait to get a definite logged-in state before rendering
   if (loggedInUser === undefined) {

@@ -9,17 +9,22 @@ export default function CreateChore() {
   const [name, setName] = useState("");
   const [difficulty, setDifficulty] = useState("");
   const [choreFrequencyDays, setFrequency] = useState("");
- 
+  const [errors, setErrors] = useState("");
 
-  const submit = () => {
+  const submit = (e) => {
+    e.preventDefault();
     const newChore = {
       name,
       difficulty,
-      choreFrequencyDays
+      choreFrequencyDays,
     };
 
-    addChore(newChore).then(() => {
-      navigate("/chore");
+    addChore(newChore).then((res) => {
+      if (res.errors) {
+        setErrors(res.errors);
+      } else {
+        navigate("/chores");
+      }
     });
   };
 
@@ -30,6 +35,7 @@ export default function CreateChore() {
         <FormGroup>
           <Label htmlFor="name">Name</Label>
           <Input
+          required
             type="text"
             placeholder="Name..."
             name="name"
@@ -42,6 +48,7 @@ export default function CreateChore() {
         <FormGroup>
           <Label htmlFor="difficulty">Difficulty (1-5)</Label>
           <Input
+          required
             type="text"
             placeholder="1..."
             name="difficulty"
@@ -54,6 +61,7 @@ export default function CreateChore() {
         <FormGroup>
           <Label htmlFor="frequency">How often this chore is done</Label>
           <Input
+          required
             type="text"
             placeholder="1..."
             name="frequencyOfDays"
@@ -63,6 +71,13 @@ export default function CreateChore() {
             }}
           />
         </FormGroup>
+        <div style={{ color: "red" }}>
+          {Object.keys(errors).map((key) => (
+            <p key={key}>
+              {key}: {errors[key].join(",")}
+            </p>
+          ))}
+        </div>
         <Button onClick={submit}>Submit</Button>
       </Form>
     </div>

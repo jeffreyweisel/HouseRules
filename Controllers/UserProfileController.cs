@@ -19,23 +19,34 @@ public class UserProfileController : ControllerBase
         _dbContext = context;
     }
 
-    public IActionResult Get()
-    {
-        return Ok(_dbContext
-            .UserProfiles
-            .Include(up => up.IdentityUser)
-            .Select(up => new UserProfileDTO
-            {
-                Id = up.Id,
-                FirstName = up.FirstName,
-                LastName = up.LastName,
-                Address = up.Address,
-                IdentityUserId = up.IdentityUserId,
-                Email = up.IdentityUser.Email,
-                UserName = up.IdentityUser.UserName
-            })
-            .ToList());
-    }
+   public IActionResult Get()
+{
+    return Ok(_dbContext
+        .UserProfiles
+        .Include(up => up.IdentityUser)
+        .Include(up => up.ChoreAssignments) // Include the ChoreAssignments collection
+        .Select(up => new UserProfileDTO
+        {
+            Id = up.Id,
+            FirstName = up.FirstName,
+            LastName = up.LastName,
+            Address = up.Address,
+            IdentityUserId = up.IdentityUserId,
+            Email = up.IdentityUser.Email,
+            UserName = up.IdentityUser.UserName,
+            ChoreAssignments = up.ChoreAssignments
+                .Select(ca => new ChoreAssignmentDTO
+                {
+                    Id = ca.Id,
+                    UserProfileId = ca.UserProfileId,
+                    ChoreId = ca.ChoreId
+                    // Include other ChoreAssignment properties as needed
+                })
+                .ToList()
+        })
+        .ToList());
+}
+
 
     [HttpGet("withroles")]
     // [Authorize(Roles = "Admin")]
