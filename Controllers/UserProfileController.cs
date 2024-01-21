@@ -24,7 +24,7 @@ public class UserProfileController : ControllerBase
     return Ok(_dbContext
         .UserProfiles
         .Include(up => up.IdentityUser)
-        .Include(up => up.ChoreAssignments) // Include the ChoreAssignments collection
+        .Include(up => up.ChoreAssignments) 
         .Select(up => new UserProfileDTO
         {
             Id = up.Id,
@@ -40,7 +40,6 @@ public class UserProfileController : ControllerBase
                     Id = ca.Id,
                     UserProfileId = ca.UserProfileId,
                     ChoreId = ca.ChoreId
-                    // Include other ChoreAssignment properties as needed
                 })
                 .ToList()
         })

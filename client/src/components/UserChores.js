@@ -45,7 +45,6 @@ export default function UserChoreList({ loggedInUser }) {
                   <th scope="row">{`${c.name}`}</th>
                   <td>{c.difficulty}/5</td>
                   <td>Every {c.choreFrequencyDays} days</td>
-                  <Link to={`${c.id}`}>Details</Link>
                   <Button onClick={() => handleChoreCompletionButtonClick(c.id)}>
                     Complete
                   </Button>
